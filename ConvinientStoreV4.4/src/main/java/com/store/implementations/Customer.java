@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 
@@ -30,9 +31,10 @@ public class Customer {
 
     public String addToCart(String item, int quantity) {
         item = item.toLowerCase();
-        Map<String, ProductDetails> itemCategory = productCheck.apply(item);
-        if(itemCategory != null) {
-            if(adjustQuantity(item, quantity)) {
+        String result = "";
+        try{
+            Map<String, ProductDetails> itemCategory = productCheck.apply(item);
+            if(adjustQuantity.test(item, quantity)) {
                 if (cart.containsKey(item)) {
                     int currentQuantity = cart.get(item).getQuantity() + quantity;
                     cart.get(item).setQuantity(currentQuantity);
@@ -46,20 +48,21 @@ public class Customer {
                 }
                 System.out.println(quantity+ " "+ item+" added to your cart.");
                 System.out.println();
-                return "DONE";
+                result = "DONE";
             }
             else {
                 if(itemCategory.get(item).getQuantity() == 0){
                     System.out.println("OUT OF STOCK");
                     System.out.println();
-                    return "OUT-OF-STOCK";
+                    result = "OUT-OF-STOCK";
                 }
                 else System.out.println(item.toUpperCase()+"s remaining "+ itemCategory.get(item).getQuantity());
             }
-        }
-        else
+            return result;
+        }catch (NullPointerException e){
             System.out.println("We dont have "+item.toUpperCase()+" in our store for now.");
-        return "NOT-IN-STORE";
+            return "NOT-IN-STORE";
+        }
     }
 
     public String removeFromCart(String item, int quantity) {
@@ -67,7 +70,7 @@ public class Customer {
         // Convert quantity to negative to be able to reuse the adjustQuantity method
         quantity = -1*quantity;
         if(cart.containsKey(item)){
-            if(adjustQuantity(item, quantity)) {
+            if(adjustQuantity.test(item, quantity)) {
                 if (cart.get(item).getQuantity() + quantity > 0) {
                     cart.get(item).setQuantity(cart.get(item).getQuantity() + quantity);
                     System.out.println(-1*quantity + " " + item + " removed from your cart!");
@@ -94,7 +97,7 @@ public class Customer {
     }
 
     public void viewMyCart(CATEGORY CAT){
-        products.view.accept(CAT);
+        Products.view.accept(CAT);
     }
 
 
@@ -111,42 +114,55 @@ public class Customer {
 //                                products.getTools().containsKey(productName)? products.getTools():null;
 //    }
 
-    private boolean adjustQuantity(String item, int quantity){
-        if(products.getFruits().containsKey(item)) {
-            if((products.getFruits().get(item).getQuantity() - quantity) >= 0) {
-                products.getFruits().get(item).setQuantity(products.getFruits().get(item).getQuantity() - quantity);
-                return true;
-            }
-            else
-                return false;
-        }
-        else if(products.getProvisions().containsKey(item)){
-            if((products.getProvisions().get(item).getQuantity() - quantity) >= 0) {
-                products.getProvisions().get(item).setQuantity(products.getProvisions().get(item).getQuantity() - quantity);
-                return true;
-            }
-            else
-                return false;
-        }
-        else if(products.getTools().containsKey(item)){
-            if((products.getTools().get(item).getQuantity() - quantity) >= 0) {
-                products.getTools().get(item).setQuantity(products.getTools().get(item).getQuantity() - quantity);
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        else if(products.getVegetables().containsKey(item)){
-            if((products.getVegetables().get(item).getQuantity() - quantity) >= 0) {
-                products.getVegetables().get(item).setQuantity(products.getVegetables().get(item).getQuantity() - quantity);
-                return true;
-            }
-            else {
+    private BiPredicate<String, Integer> adjustQuantity = (item, quantity)->
+        (products.getFruits().containsKey(item))&&((products.getFruits().get(item).getQuantity() - quantity) >= 0)?
+                products.getFruits().get(item).setQuantity(products.getFruits().get(item).getQuantity() - quantity):
+                (products.getProvisions().containsKey(item))&&((products.getProvisions().get(item).getQuantity() - quantity) >= 0)?
+                        products.getProvisions().get(item).setQuantity(products.getProvisions().get(item).getQuantity() - quantity):
+                        (products.getTools().containsKey(item))&&((products.getTools().get(item).getQuantity() - quantity) >= 0)?
+                                products.getTools().get(item).setQuantity(products.getTools().get(item).getQuantity() - quantity):
+                                (products.getVegetables().containsKey(item))&&((products.getVegetables().get(item).getQuantity() - quantity) >= 0)?
+                                        products.getVegetables().get(item).setQuantity(products.getVegetables().get(item).getQuantity() - quantity):
+                                        (products.getOthers().containsKey(item))&&((products.getOthers().get(item).getQuantity() - quantity) >= 0)?
+                                                products.getOthers().get(item).setQuantity(products.getOthers().get(item).getQuantity() - quantity):false;
 
-                return false;
-            }
-        }
-        else return false;
-    }
+
+//    private boolean adjustQuantity(String item, int quantity){
+//        if(products.getFruits().containsKey(item)) {
+//            if((products.getFruits().get(item).getQuantity() - quantity) >= 0) {
+//                products.getFruits().get(item).setQuantity(products.getFruits().get(item).getQuantity() - quantity);
+//                return true;
+//            }
+//            else
+//                return false;
+//        }
+//        else if(products.getProvisions().containsKey(item)){
+//            if((products.getProvisions().get(item).getQuantity() - quantity) >= 0) {
+//                products.getProvisions().get(item).setQuantity(products.getProvisions().get(item).getQuantity() - quantity);
+//                return true;
+//            }
+//            else
+//                return false;
+//        }
+//        else if(products.getTools().containsKey(item)){
+//            if((products.getTools().get(item).getQuantity() - quantity) >= 0) {
+//                products.getTools().get(item).setQuantity(products.getTools().get(item).getQuantity() - quantity);
+//                return true;
+//            }
+//            else {
+//                return false;
+//            }
+//        }
+//        else if(products.getVegetables().containsKey(item)){
+//            if((products.getVegetables().get(item).getQuantity() - quantity) >= 0) {
+//                products.getVegetables().get(item).setQuantity(products.getVegetables().get(item).getQuantity() - quantity);
+//                return true;
+//            }
+//            else {
+//
+//                return false;
+//            }
+//        }
+//        else return false;
+//    }
 }

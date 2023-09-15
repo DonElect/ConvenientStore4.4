@@ -76,7 +76,6 @@ public class CashierImp implements CashierServices {
     }
 
     private boolean dispenseReceipt(String customer_name, Map<String, ProductDetails> cart) {
-        //System.out.println(cart.size());
         if (!cart.isEmpty()) {
             System.out.println("*********************************************************");
             System.out.println(customer_name + " PURCHASE RECEIPT");
@@ -95,12 +94,6 @@ public class CashierImp implements CashierServices {
                     }
             ).map(item -> item.getValue().getPrice() * item.getValue().getQuantity()).reduce(0, Integer::sum);
 
-//            for (Map.Entry<String, ProductDetails> items : cart.entrySet()) {
-//                System.out.printf("%-25s %-25s %-25s", items.getKey(), items.getValue().getPrice(), items.getValue().getQuantity());
-//                System.out.println();
-//                sum += items.getValue().getPrice() * (items.getValue().getQuantity());
-//            }
-            // Formatting currency to Nigeria naira and adding decimals.
             NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "ng"));
             String result = formatter.format(totalAmount);
 
@@ -163,11 +156,6 @@ public class CashierImp implements CashierServices {
     public void addToPriority(CustomerModel customer) {
         priorityCart.add(customer);
     }
-
-//    public void check(){
-//        System.out.println(fifoCart.size());
-//        System.out.println(priorityCart.size());
-//    }
 
     public Queue<CustomerModel> getFIFO(){
         return fifoCart;

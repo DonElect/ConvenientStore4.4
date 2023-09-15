@@ -141,7 +141,6 @@ public class Store {
                 thread3.join();
             } catch (InterruptedException e) {
                 System.out.println("Interrupt Thrown " + e);
-                ;
             }
         }
 

@@ -15,4 +15,10 @@ public class ProductDetails {
     private CATEGORY CAT;
     private int price;
     private int quantity;
+
+
+    public boolean setQuantity(int quantity) {
+        this.quantity = quantity;
+        return true;
+    }
 }
