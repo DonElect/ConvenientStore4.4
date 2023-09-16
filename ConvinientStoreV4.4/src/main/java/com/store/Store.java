@@ -66,15 +66,13 @@ public class Store {
         cashierImp1.view(CATEGORY.TOOLS);
 
 
-        // Customer1 Buying items from store
+        // Customers Buying items from store
         customer1.addToCart("Mango", 25);
         customer1.addToCart("Orange", 65);
         customer1.addToCart("Banana", 2);
-        customer1.addToCart("miksi", 1);
-        customer1.addToCart("soldering iron", 1);
+        customer1.addToCart("Miksi", 1);
+        customer1.addToCart("Soldering iron", 1);
 
-
-        // Customer2 buying items
         customer2.addToCart("Mango", 11);
         customer2.addToCart("Orange", 25);
         customer2.addToCart("Banana", 10);
@@ -125,7 +123,6 @@ public class Store {
         customer8.buy();
         customer9.buy();
         customer10.buy();
-
 
         while (!CashierImp.getPriorityCart().isEmpty()) {
             Thread thread1 = new Thread(cashierImp1::sellByPriority, "Cashier: " + cashier1.getFirstName());

@@ -155,22 +155,6 @@ public class Products implements ProductsManagement {
         else System.out.println("We do not have such category in our store");
     };
 
-//    void view(CATEGORY CAT){
-//        if (CAT == CATEGORY.FRUITS){
-//            viewProducts(fruits);
-//        }
-//        else if (CAT == CATEGORY.VEGETABLES){
-//            viewProducts(vegetables);
-//        }
-//        else if (CAT == CATEGORY.PROVISIONS){
-//            viewProducts(provisions);
-//        }
-//        else if (CAT == CATEGORY.TOOLS){
-//            viewProducts(tools);
-//        }
-//        else System.out.println("We do not have such category in our store");
-//    }
-
 public Map<String, ProductDetails> getProvisions() {
     return provisions;
 }

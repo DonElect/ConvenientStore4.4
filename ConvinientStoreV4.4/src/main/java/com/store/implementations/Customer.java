@@ -107,62 +107,21 @@ public class Customer {
                      products.getFruits().containsKey(productName)? products.getFruits():
                              products.getTools().containsKey(productName)? products.getTools():
                                      products.getOthers().containsKey(productName)?products.getOthers():null;
-//    private Map<String, ProductDetails> productCheck(String productName){
-//        return products.getProvisions().containsKey(productName)? products.getProvisions():
-//                products.getVegetables().containsKey(productName)? products.getVegetables():
-//                        products.getFruits().containsKey(productName)? products.getFruits():
-//                                products.getTools().containsKey(productName)? products.getTools():null;
-//    }
 
     private BiPredicate<String, Integer> adjustQuantity = (item, quantity)->
+            // Checking if item is found in Fruits and adjusting the quantity of the item
         (products.getFruits().containsKey(item))&&((products.getFruits().get(item).getQuantity() - quantity) >= 0)?
                 products.getFruits().get(item).setQuantity(products.getFruits().get(item).getQuantity() - quantity):
+                // Checking if item is found in Provisions and adjusting the quantity of the item
                 (products.getProvisions().containsKey(item))&&((products.getProvisions().get(item).getQuantity() - quantity) >= 0)?
                         products.getProvisions().get(item).setQuantity(products.getProvisions().get(item).getQuantity() - quantity):
+                        // Checking if item is found in Tools and adjusting the quantity of the item
                         (products.getTools().containsKey(item))&&((products.getTools().get(item).getQuantity() - quantity) >= 0)?
                                 products.getTools().get(item).setQuantity(products.getTools().get(item).getQuantity() - quantity):
+                                // Checking if item is found in Vegetables and adjusting the quantity of the item
                                 (products.getVegetables().containsKey(item))&&((products.getVegetables().get(item).getQuantity() - quantity) >= 0)?
                                         products.getVegetables().get(item).setQuantity(products.getVegetables().get(item).getQuantity() - quantity):
+                                        // Checking if item is found in Others and adjusting the quantity of the item
                                         (products.getOthers().containsKey(item))&&((products.getOthers().get(item).getQuantity() - quantity) >= 0)?
                                                 products.getOthers().get(item).setQuantity(products.getOthers().get(item).getQuantity() - quantity):false;
-
-
-//    private boolean adjustQuantity(String item, int quantity){
-//        if(products.getFruits().containsKey(item)) {
-//            if((products.getFruits().get(item).getQuantity() - quantity) >= 0) {
-//                products.getFruits().get(item).setQuantity(products.getFruits().get(item).getQuantity() - quantity);
-//                return true;
-//            }
-//            else
-//                return false;
-//        }
-//        else if(products.getProvisions().containsKey(item)){
-//            if((products.getProvisions().get(item).getQuantity() - quantity) >= 0) {
-//                products.getProvisions().get(item).setQuantity(products.getProvisions().get(item).getQuantity() - quantity);
-//                return true;
-//            }
-//            else
-//                return false;
-//        }
-//        else if(products.getTools().containsKey(item)){
-//            if((products.getTools().get(item).getQuantity() - quantity) >= 0) {
-//                products.getTools().get(item).setQuantity(products.getTools().get(item).getQuantity() - quantity);
-//                return true;
-//            }
-//            else {
-//                return false;
-//            }
-//        }
-//        else if(products.getVegetables().containsKey(item)){
-//            if((products.getVegetables().get(item).getQuantity() - quantity) >= 0) {
-//                products.getVegetables().get(item).setQuantity(products.getVegetables().get(item).getQuantity() - quantity);
-//                return true;
-//            }
-//            else {
-//
-//                return false;
-//            }
-//        }
-//        else return false;
-//    }
 }
